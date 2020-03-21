@@ -1,20 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 
 <head>
   <meta charset="UTF-8">
-  <title>TipsNote : GitHub Pages Sample</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/marx/3.0.7/marx.css">
+  <title>React Sample</title>
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
+  <link href="https://fonts.googleapis.com/css?family=Indie+Flower&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+  <style>
+    body {
+      /* font-family: 'Tangerine', serif; */
+      /* font-family: 'Open Sans', sans-serif; */
+      font-family: 'Indie Flower', cursive;
+      font-size: 24px;
+    }
+  </style>
 </head>
 
 <body>
-  <main>
-    <h1>GitHub Pages</h1>
-    <button>test</button>
-  </main>
+  <div id="root"></div>
 
-  <script>
-    console.log('GitHub Pages Sample');
+  <script type="text/babel">
+    class MyComponent extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          count: 0,//moment()
+          time: moment().format('MMMM Do YYYY, h:mm:ss a')
+        };
+      }
+
+      render() {
+        setInterval(() => {
+          this.setState({ time: moment().format('MMMM Do YYYY, h:mm:ss a') })
+        }, 1000);
+        return (
+          <div class="container">
+            <h1>Hello! World.</h1>
+            <p>this is test page</p>
+            <p>{this.state.time}</p>
+            <p>You clicked {this.state.count} times</p>
+            <button onClick={() => this.setState({ count: this.state.count + 1 })}>Click me</button>
+            <button onClick={() => this.setState({ time: moment().format('MMMM Do YYYY, h:mm:ss a') })}>Click me</button>
+          </div>
+        )
+      }
+    }
+
+
+    ReactDOM.render(<MyComponent />, document.getElementById('root'))
   </script>
 </body>
 
