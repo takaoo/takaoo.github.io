@@ -24,10 +24,10 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
   <style>
     body {
-      /* font-family: 'Tangerine', serif; */
-      /* font-family: 'Open Sans', sans-serif; */
       font-family: 'Indie Flower', cursive;
       font-size: 48px;
     }
@@ -50,16 +50,40 @@
 
       render() {
         const aaa = setInterval(() => {
-          console.log("w");
+          // console.log(time.diff(moment(), 'seconds'));
           this.setState({ time: time.diff(moment(), 'seconds') })
           clearInterval(aaa)
         }, 1000);
         aaa
+        function animateCSS(element, animationName, callback) {
+          const node = document.querySelector(element)
+          node.classList.add('animated', animationName)
+
+          function handleAnimationEnd() {
+            node.classList.remove('animated', animationName)
+            node.removeEventListener('animationend', handleAnimationEnd)
+
+            if (typeof callback === 'function') callback()
+          }
+
+          node.addEventListener('animationend', handleAnimationEnd)
+        }
         return (
-          <div class="mt-5 col" style={{ height: '400px' }}>
-            <p class="d-flex justify-content-center">J</p>
-            <p class="d-flex justify-content-center">setting date: {D}</p>
-            <p class="d-flex justify-content-center">{this.state.time}</p>
+          <div class="mt-5" style={{ height: '100vh' }}>
+            <p style={{ fontSize: "3em" }} class="d-flex justify-content-center">J</p>
+            <div>
+              main
+              <p class="d-flex justify-content-center">setting date: {D}</p>
+              <p class="d-flex justify-content-center test">last {this.state.time} seconds</p>
+            </div>
+
+            <div>
+              sub
+              <p class="d-flex justify-content-center">last {time.diff(moment(), 'minutes')} minutes</p>
+              <p class="d-flex justify-content-center">last {time.diff(moment(), 'days')} days</p>
+              <p class="d-flex justify-content-center">last {time.diff(moment(), 'months')} months</p>
+            </div>
+
           </div>
         )
 
