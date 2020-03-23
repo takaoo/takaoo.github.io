@@ -3,8 +3,10 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>React Sample</title>
-  <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+  <title>J</title>
+  <link rel="shortcut icon" href="./c_j.ico">
+  <script crossorigin src=" https://unpkg.com/react@16/umd/react.production.min.js">
+  </script>
   <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
@@ -27,38 +29,41 @@
       /* font-family: 'Tangerine', serif; */
       /* font-family: 'Open Sans', sans-serif; */
       font-family: 'Indie Flower', cursive;
-      font-size: 24px;
+      font-size: 48px;
     }
   </style>
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root" class="container"></div>
 
   <script type="text/babel">
+    const D = "2021-04-01";
+    let time = moment(D)
     class MyComponent extends React.Component {
       constructor(props) {
         super(props);
         this.state = {
-          count: 0,//moment()
-          time: moment().format('MMMM Do YYYY, h:mm:ss a')
-        };
+          time: time.diff(moment(), 'seconds')
+        }
       }
 
       render() {
-        setInterval(() => {
-          this.setState({ time: moment().format('MMMM Do YYYY, h:mm:ss a') })
+        const aaa = setInterval(() => {
+          console.log("w");
+          this.setState({ time: time.diff(moment(), 'seconds') })
+          clearInterval(aaa)
         }, 1000);
+        aaa
         return (
-          <div class="container">
-            <h1>Hello! World.</h1>
-            <p>this is test page</p>
-            <p>{this.state.time}</p>
-            <p>You clicked {this.state.count} times</p>
-            <button onClick={() => this.setState({ count: this.state.count + 1 })}>Click me</button>
-            <button onClick={() => this.setState({ time: moment().format('MMMM Do YYYY, h:mm:ss a') })}>Click me</button>
+          <div class="mt-5 col" style={{ height: '400px' }}>
+            <p class="d-flex justify-content-center">J</p>
+            <p class="d-flex justify-content-center">setting date: {D}</p>
+            <p class="d-flex justify-content-center">{this.state.time}</p>
           </div>
         )
+
+
       }
     }
 
