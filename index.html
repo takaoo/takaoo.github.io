@@ -51,7 +51,7 @@
         }
 
         const aaa = setInterval(() => {
-          console.log(time.diff(moment(), 'seconds'));
+          // console.log(time.diff(moment(), 'seconds'));
           this.setState({ time: time.diff(moment(), 'seconds'), time_tmp: time_tmp.diff(moment(), 'seconds') })
         }, 1000);
         aaa
@@ -74,14 +74,15 @@
             <div class="tab-content" style={{ fontSize: '1.5em' }}>
               <div id="tab1" class="tab-pane active">
                 <p class="d-flex justify-content-center">date: {nextMeet}</p>
-                <p class="d-flex justify-content-center test">Last {this.state.time_tmp} seconds</p>
+                <p class="d-flex justify-content-center test">{this.state.time_tmp} sec</p>
+                <p class="d-flex justify-content-center">{time_tmp.diff(moment(), 'days')} days</p>
               </div>
               <div id="tab2" class="tab-pane">
                 <p class="d-flex justify-content-center">date: {D}</p>
-                <p class="d-flex justify-content-center test">Last {this.state.time} seconds</p>
-                <p class="d-flex justify-content-center">Last {time.diff(moment(), 'minutes')} minutes</p>
-                <p class="d-flex justify-content-center">Last {time.diff(moment(), 'days')} days</p>
-                <p class="d-flex justify-content-center">Last {time.diff(moment(), 'months')} months</p>
+                <p class="d-flex justify-content-center test">{this.state.time} sec</p>
+                <p class="d-flex justify-content-center">{time.diff(moment(), 'minutes')} min</p>
+                <p class="d-flex justify-content-center">{time.diff(moment(), 'days')} days</p>
+                <p class="d-flex justify-content-center">{time.diff(moment(), 'months')} months</p>
               </div>
             </div>
 
