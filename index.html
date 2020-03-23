@@ -25,82 +25,78 @@
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
   <style>
     body {
       font-family: 'Indie Flower', cursive;
-      font-size: 65px;
+      font-size: 48px;
     }
   </style>
 
 </head>
 
 <body style='background: linear-gradient(#EBDEF0,#E2B0FF);'>
+  <div id="root" class="container"></div>
+
+  <script type="text/babel">
+    const D = "2021-04-01";
+    const nextMeet = "2020-04-11";
+    let time = moment(D)
+    let time_tmp = moment(nextMeet)
+    class MyComponent extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          time: time.diff(moment(), 'seconds'),
+          time_tmp: time_tmp.diff(moment(), 'seconds')
+        }
+
+        const aaa = setInterval(() => {
+          console.log(time.diff(moment(), 'seconds'));
+          this.setState({ time: time.diff(moment(), 'seconds'), time_tmp: time_tmp.diff(moment(), 'seconds') })
+        }, 1000);
+        aaa
+      }
+
+      render() {
+        return (
+          <div class="mt-5">
+            <p style={{ fontSize: "3em" }} class="d-flex justify-content-center">Jujiiiieeee</p>
+
+            <ul class="nav nav-pills nav-fill">
+              <li class="nav-item">
+                <a href="#tab1" class="nav-link active" data-toggle="tab">next meet</a>
+              </li>
+              <li class="nav-item">
+                <a href="#tab2" class="nav-link" data-toggle="tab">time to be with J</a>
+              </li>
+            </ul>
+
+            <div class="tab-content" style={{ fontSize: '1.5em' }}>
+              <div id="tab1" class="tab-pane active">
+                <p class="d-flex justify-content-center">date: {nextMeet}</p>
+                <p class="d-flex justify-content-center test">Last {this.state.time_tmp} seconds</p>
+              </div>
+              <div id="tab2" class="tab-pane">
+                <p class="d-flex justify-content-center">date: {D}</p>
+                <p class="d-flex justify-content-center test">Last {this.state.time} seconds</p>
+                <p class="d-flex justify-content-center">Last {time.diff(moment(), 'minutes')} minutes</p>
+                <p class="d-flex justify-content-center">Last {time.diff(moment(), 'days')} days</p>
+                <p class="d-flex justify-content-center">Last {time.diff(moment(), 'months')} months</p>
+              </div>
+            </div>
+
+          </div>
+        )
+      }
+    }
+    ReactDOM.render(<MyComponent />, document.getElementById('root'))
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/bubbly-bg@1.0.0/dist/bubbly-bg.js"></script>
   <script>bubbly({
       colorStart: "#EBDEF0",
       colorStop: "#E2B0FF",
     });
-  </script>
-
-  <div id="root" class="container"></div>
-
-  <script type="text/babel">
-    const D = "2021-04-01";
-    let time = moment(D)
-    class MyComponent extends React.Component {
-      constructor(props) {
-        super(props);
-        this.state = {
-          time: time.diff(moment(), 'seconds')
-        }
-      }
-
-      render() {
-        const aaa = setInterval(() => {
-          // console.log(time.diff(moment(), 'seconds'));
-          this.setState({ time: time.diff(moment(), 'seconds') })
-          clearInterval(aaa)
-        }, 1000);
-        aaa
-        function animateCSS(element, animationName, callback) {
-          const node = document.querySelector(element)
-          node.classList.add('animated', animationName)
-
-          function handleAnimationEnd() {
-            node.classList.remove('animated', animationName)
-            node.removeEventListener('animationend', handleAnimationEnd)
-
-            if (typeof callback === 'function') callback()
-          }
-
-          node.addEventListener('animationend', handleAnimationEnd)
-        }
-        return (
-          <div class="mt-5">
-            <p style={{ fontSize: "3em" }} class="d-flex justify-content-center">Jujiiiieeee</p>
-            <div>
-              main
-              <p class="d-flex justify-content-center">Setting date: {D}</p>
-              <p class="d-flex justify-content-center test">Last {this.state.time} seconds</p>
-            </div>
-
-            <div>
-              sub
-              <p class="d-flex justify-content-center">Last {time.diff(moment(), 'minutes')} minutes</p>
-              <p class="d-flex justify-content-center">Last {time.diff(moment(), 'days')} days</p>
-              <p class="d-flex justify-content-center">Last {time.diff(moment(), 'months')} months</p>
-            </div>
-
-          </div>
-        )
-
-
-      }
-    }
-
-
-    ReactDOM.render(<MyComponent />, document.getElementById('root'))
   </script>
 </body>
 
