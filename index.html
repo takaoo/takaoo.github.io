@@ -24,27 +24,25 @@
 
   <div id="root"></div>
   <script type="text/babel">
-    const D = "2021-04-01";
-    const nextMeet = "2020-04-11";
+    const D = "2021-04-01"
+    const NEXT_MEET = "2020-04-11"
     let time = moment(D)
-    let time_tmp = moment(nextMeet)
+    let time_tmp = moment(NEXT_MEET)
     const Container = ReactBootstrap.Container
     const Tabs = ReactBootstrap.Tabs
     const Tab = ReactBootstrap.Tab
     const arr = ['seconds', 'minutes', 'hours', 'days', 'weeks', 'months']
     class MyComponent extends React.Component {
       constructor(props) {
-        super(props);
+        super(props)
         this.state = {
           time: time.diff(moment(), 'seconds'),
           time_tmp: time_tmp.diff(moment(), 'seconds')
         }
-
-        const aaa = setInterval(() => {
+        setInterval(() => {
           // console.log(time.diff(moment(), 'seconds'));
           this.setState({ time: time.diff(moment(), 'seconds'), time_tmp: time_tmp.diff(moment(), 'seconds') })
         }, 1000);
-        aaa
       }
 
       render() {
@@ -54,7 +52,7 @@
 
             <Tabs variant="pills" defaultActiveKey="tab1" fill transition={false}>
               <Tab style={{ fontSize: '1.5em' }} eventKey="tab1" title="next meet">
-                <p class="d-flex justify-content-center">date: {nextMeet}</p>
+                <p class="d-flex justify-content-center">date: {NEXT_MEET}</p>
                 {arr.map(d => {
                   return <p class="d-flex justify-content-center">{time_tmp.diff(moment(), d)} {d}</p>
                 })}
@@ -67,7 +65,6 @@
               </Tab>
             </Tabs>
           </Container>
-
         )
       }
     }
