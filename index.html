@@ -9,6 +9,7 @@
   <!-- bootstrap CDN -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 
   <style>
     body {
@@ -32,6 +33,7 @@
     const Tabs = ReactBootstrap.Tabs
     const Tab = ReactBootstrap.Tab
     const arr = ['seconds', 'minutes', 'hours', 'days', 'weeks', 'months']
+    const Button = ReactBootstrap.Button
     class MyComponent extends React.Component {
       constructor(props) {
         super(props)
@@ -48,7 +50,7 @@
       render() {
         return (
           <Container style={{ marginTop: '20vh' }}>
-            <p style={{ fontSize: "4em" }} class="d-flex justify-content-center">Jujiiiieeee</p>
+            <p style={{ fontSize: "4em" }} class="d-flex justify-content-center animated tada">Jujiiiieeee</p>
 
             <Tabs variant="pills" defaultActiveKey="tab1" fill transition={false}>
               <Tab style={{ fontSize: '1.5em' }} eventKey="tab1" title="next meet">
@@ -64,6 +66,15 @@
                 })}
               </Tab>
             </Tabs>
+
+            <Button variant="primary">Primary</Button>{' '}
+            <Button variant="secondary">Secondary</Button>{' '}
+            <Button variant="success">Success</Button>{' '}
+            <Button variant="warning">Warning</Button>{' '}
+            <Button variant="danger">Danger</Button>{' '}
+            <Button variant="info">Info</Button>{' '}
+            <Button variant="light">Light</Button>{' '}
+            <Button variant="dark">Dark</Button>{' '}
           </Container>
         )
       }
