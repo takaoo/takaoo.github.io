@@ -27,8 +27,10 @@
   <script type="text/babel">
     const D = "2021-04-01"
     const NEXT_MEET = "2020-04-11"
+    const TWO_YEARS = "2020-11-11"
     let time = moment(D)
     let time_tmp = moment(NEXT_MEET)
+    let time_two_years = moment(TWO_YEARS)
     const Container = ReactBootstrap.Container
     const Tabs = ReactBootstrap.Tabs
     const Tab = ReactBootstrap.Tab
@@ -51,15 +53,22 @@
 
       render() {
         return (
-          <Container style={{ marginTop: '20vh' }}>
+          <Container style={{ marginTop: '10vh' }}>
             <p style={{ fontSize: "4em" }} class={`d-flex justify-content-center animated ${RANDOM_ANIME}`}>Jujiiiieeee</p>
 
-            <Tabs variant="pills" defaultActiveKey="tab1" fill transition={false}>
-              <Tab style={{ fontSize: '1.5em' }} eventKey="tab1" title="next meet">
+            <Tabs variant="pills" defaultActiveKey="tab1" justify transition={false}>
+              <Tab style={{ fontSize: '1.5em' }} eventKey="tab1" title="1">
+                <p style={{ fontSize: '1.5em' }} class="d-flex justify-content-center">NEXT MEET</p>
                 <p class="d-flex justify-content-center">date: {NEXT_MEET}</p>
                 {arr.map(d => { return <p class="d-flex justify-content-center">{time_tmp.diff(moment(), d)} {d}</p> })}
               </Tab>
-              <Tab style={{ fontSize: '1.5em' }} eventKey="tab2" title="time to be with J">
+              <Tab style={{ fontSize: '1.5em' }} eventKey="tab2" title="2">
+                <p style={{ fontSize: '1.5em' }} class="d-flex justify-content-center">2 YEARS</p>
+                <p class="d-flex justify-content-center">date: {TWO_YEARS}</p>
+                {arr.map(d => { return <p class="d-flex justify-content-center">{time_two_years.diff(moment(), d)} {d}</p> })}
+              </Tab>
+              <Tab style={{ fontSize: '1.5em' }} eventKey="tab3" title="3">
+                <p style={{ fontSize: '1.3em' }} class="d-flex justify-content-center">TIME 2 B WITH J</p>
                 <p class="d-flex justify-content-center">date: {D}</p>
                 {arr.map(d => { return <p class="d-flex justify-content-center">{time.diff(moment(), d)} {d}</p> })}
               </Tab>
