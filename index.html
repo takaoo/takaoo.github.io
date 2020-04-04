@@ -58,9 +58,18 @@
 
             <Tabs variant="pills" defaultActiveKey="tab1" justify transition={false}>
               <Tab style={{ fontSize: '1.5em' }} eventKey="tab1" title="1">
+                {(() => {
+                  if (time_tmp.diff(moment(), 'days') === 1) {
+                    return <p class="d-flex justify-content-center text-danger animated tada infinite">Last One Day!!!!!!!!!</p>;
+                  }
+                })()}
                 <p style={{ fontSize: '1.5em' }} class="d-flex justify-content-center">NEXT MEET</p>
                 <p class="d-flex justify-content-center">date: {NEXT_MEET}</p>
-                {arr.map(d => { return <p class="d-flex justify-content-center">{time_tmp.diff(moment(), d)} {d}</p> })}
+                {arr.map(d => { 
+                  let style 
+                  if(time_tmp.diff(moment(), d) === 0) style = "d-flex justify-content-center text-primary" 
+                  else style = "d-flex justify-content-center"                  
+                  return <p class={style}>{time_tmp.diff(moment(), d)} {d}</p> })}
               </Tab>
               <Tab style={{ fontSize: '1.5em' }} eventKey="tab2" title="2">
                 <p style={{ fontSize: '1.5em' }} class="d-flex justify-content-center">2 YEARS</p>
@@ -70,7 +79,11 @@
               <Tab style={{ fontSize: '1.5em' }} eventKey="tab3" title="3">
                 <p style={{ fontSize: '1.3em' }} class="d-flex justify-content-center">TIME 2 B WITH J</p>
                 <p class="d-flex justify-content-center">date: {D}</p>
-                {arr.map(d => { return <p class="d-flex justify-content-center">{time.diff(moment(), d)} {d}</p> })}
+                {arr.map(d => {
+                  let style 
+                  if(time.diff(moment(), d) === 0) style = "d-flex justify-content-center text-info" 
+                  else style = "d-flex justify-content-center"
+                  return <p class={style}>{time.diff(moment(), d)} {d}</p> })}
               </Tab>
             </Tabs>
 
