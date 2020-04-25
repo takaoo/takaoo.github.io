@@ -36,7 +36,7 @@
     const Tab = ReactBootstrap.Tab
     const Image = ReactBootstrap.Image
     const arr = ['seconds', 'minutes', 'hours', 'days', 'weeks', 'months']
-    const ANIME = ['bounce', 'flash', 'pulse', 'rubberBand', 'shake', 'headShake', 'swing', 'tada', 'wobble', 'jello', 'bounceIn', 'bounceInDown', 'bounceInLeft', 'bounceInRight', 'bounceInUp', 'fadeIn', 'fadeInDown', 'fadeInDownBig', 'fadeInLeft', 'fadeInLeftBig', 'fadeInRight', 'fadeInRightBig', 'fadeInUp', 'fadeInUpBig', 'flipInX', 'flipInY', 'lightSpeedIn', 'rotateIn', 'rotateInDownLeft', 'rotateInDownRight', 'rotateInUpLeft', 'rotateInUpRight', 'hinge', 'jackInTheBox', 'rollIn', 'zoomIn', 'zoomInDown', 'zoomInLeft', 'zoomInRight', 'zoomInUp', 'slideInDown', 'slideInLeft', 'slideInRight', 'slideInUp', 'heartBeat']
+    const ANIME = ['bounce', 'flash', 'pulse', 'rubberBand', 'shake', 'headShake', 'swing', 'tada', 'wobble', 'jello', 'flipInX', 'flipInY', 'hinge', 'jackInTheBox', 'heartBeat']
     const RANDOM_ANIME = ANIME[Math.floor(Math.random() * ANIME.length)]
 
     const styleFunc = (time , d)=>{
@@ -67,7 +67,7 @@
       render() {
         return (
           <Container style={{ marginTop: '10vh' }}>
-            <p style={{ fontSize: "4em" }} class={`d-flex justify-content-center animated ${RANDOM_ANIME}`}>Jujiiiieeee <Image src="pen.png" roundedCircle /></p>
+            <p style={{ fontSize: "4em" }} class={`d-flex justify-content-center`}>Jujiiieee <span class={`animated infinite slower ${RANDOM_ANIME}`}><Image src="pen.png" roundedCircle /></span></p>
 
             <Tabs variant="pills" defaultActiveKey="tab1" justify transition={false}>
               <Tab style={{ fontSize: '1.5em' }} eventKey="tab1" title="1">
