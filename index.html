@@ -35,33 +35,123 @@
     const Tabs = ReactBootstrap.Tabs
     const Tab = ReactBootstrap.Tab
     const Image = ReactBootstrap.Image
+    const Modal = ReactBootstrap.Modal
+    const Button = ReactBootstrap.Button
     const arr = ['seconds', 'minutes', 'hours', 'days', 'weeks', 'months']
     const ANIME = ['bounce', 'flash', 'pulse', 'rubberBand', 'shake', 'swing', 'tada', 'wobble', 'jello', 'hinge', 'jackInTheBox', 'heartBeat']
     const RANDOM_ANIME = ANIME[Math.floor(Math.random() * ANIME.length)]
 
-    const styleFunc = (time , d)=>{
-      let style 
-      if(time.diff(moment(), d) === 0) style = "d-flex justify-content-center text-primary" 
-      else style = "d-flex justify-content-center"                  
+    const styleFunc = (time, d) => {
+      let style
+      if (time.diff(moment(), d) === 0) style = "d-flex justify-content-center text-primary"
+      else style = "d-flex justify-content-center"
       return style
     }
-    const First = (props)=> {
+    const First = (props) => {
       return <div>
-                <p style={{ fontSize: '1.5em' }} class="d-flex justify-content-center">{props.title}</p>
-                <p class="d-flex justify-content-center">date: {props.date}</p>
-            </div>
+        <p style={{ fontSize: '1.5em' }} class="d-flex justify-content-center">{props.title}</p>
+        <p class="d-flex justify-content-center">date: {props.date}</p>
+      </div>
     }
+
+    const matterStart = () => {
+      var width = window.innerWidth * 0.7;
+      var height = window.innerHeight * 0.5;
+      // module aliases
+      var Engine = Matter.Engine,
+        Render = Matter.Render,
+        World = Matter.World,
+        Bodies = Matter.Bodies;
+
+      // create an engine
+      var engine = Engine.create();
+
+      var render = Render.create({
+        element: document.querySelector("#mattre_container"),
+        engine: engine,
+        options: {
+          width: width,
+          height: height,
+          pixelRatio: 2, //Pixel比; スマホ用に2にする
+          wireframes: false,
+          background: 'transparent'
+        }
+      });
+
+      // create two boxes and a ground
+      var boxA = Bodies.rectangle(width * 0.1, 0, 80, 80);
+      var boxB = Bodies.rectangle(width * 0.3, 0, 80, 80);
+
+      // add all of the bodies to the world
+      World.add(engine.world, [boxA, boxB]);
+
+      // add mouse control
+      var mouse = Matter.Mouse.create(render.canvas),
+        mouseConstraint = Matter.MouseConstraint.create(engine, {
+          mouse: mouse,
+          constraint: {
+            stiffness: 0.2,
+            render: {
+              visible: true
+            }
+          }
+        });
+      // マウス押したら物体出現
+      Matter.Events.on(mouseConstraint, "mousedown", e => {
+        // console.log(e,"down");
+        World.add(engine.world, [
+          Matter.Bodies.rectangle(e.mouse.absolute.x, e.mouse.absolute.y, 110, 110, {
+            render: {
+              sprite: {
+                texture: './pen.png',
+                xScale: 0.5,
+                yScale: 0.5
+              }
+            },
+          })
+        ]);
+      });
+
+      World.add(engine.world, mouseConstraint);
+
+      World.add(engine.world, [
+        // Bodies.rectangle(400, 0, 800, 5, { isStatic: true }),
+        Bodies.rectangle(width * 0.5, height, width * 0.9, 50, { isStatic: true }),
+        // Bodies.rectangle(800, 300, 50, 600, { isStatic: true }),
+        // Bodies.rectangle(0, 300, 50, 600, { isStatic: true })
+
+        Matter.Composites.pyramid(width * 0.3, 0, 5, 5, 10, 10, function (x, y) {
+          return Bodies.circle(x, y, 30, {
+            render: {
+              sprite: {
+                texture: './pen.png',
+                xScale: 0.25,
+                yScale: 0.25
+              }
+            },
+          });
+        })
+      ]);
+
+
+      // run the engine
+      Engine.run(engine);
+
+      // run the renderer
+      Render.run(render);
+    }
+
     class MyComponent extends React.Component {
       constructor(props) {
         super(props)
         this.state = {
           time: time.diff(moment(), 'seconds'),
-          time_tmp: time_tmp.diff(moment(), 'seconds')
+          time_tmp: time_tmp.diff(moment(), 'seconds'),
         }
         setInterval(() => {
           // console.log(time.diff(moment(), 'seconds'));
           this.setState({ time: time.diff(moment(), 'seconds'), time_tmp: time_tmp.diff(moment(), 'seconds') })
-        }, 1000);
+        }, 100000);
       }
 
       render() {
@@ -69,7 +159,7 @@
           <Container style={{ marginTop: '10vh' }}>
             <p style={{ fontSize: "4em" }} class={`d-flex justify-content-center`}>Jujiiieee <span class={`animated infinite slower ${RANDOM_ANIME}`}><Image src="pen.png" /></span></p>
 
-            <Tabs variant="pills" defaultActiveKey="tab1" justify transition={false}>
+            <Tabs variant="pills" defaultActiveKey="tab1" justify transition={false} onSelect={(e) => { if (e === 'matter') matterStart() }}>
               <Tab style={{ fontSize: '1.5em' }} eventKey="tab1" title="1">
                 {(() => {
                   if (time_tmp.diff(moment(), 'days') === 1) {
@@ -77,19 +167,21 @@
                   }
                 })()}
                 <First title="NEXT MEET" date={NEXT_MEET} />
-                {arr.map(d => { return <p class={styleFunc(time_tmp, d)}>{time_tmp.diff(moment(), d)} {d}</p>})}
+                {arr.map(d => { return <p class={styleFunc(time_tmp, d)}>{time_tmp.diff(moment(), d)} {d}</p> })}
               </Tab>
               <Tab style={{ fontSize: '1.5em' }} eventKey="tab2" title="2">
                 <First title="2 YEARS" date={TWO_YEARS} />
-                {arr.map(d => { return <p class={styleFunc(time_two_years, d)}>{time_two_years.diff(moment(), d)} {d}</p>})}
+                {arr.map(d => { return <p class={styleFunc(time_two_years, d)}>{time_two_years.diff(moment(), d)} {d}</p> })}
               </Tab>
               <Tab style={{ fontSize: '1.5em' }} eventKey="tab3" title="3">
                 <First title="WITH J" date={D} />
-                {arr.map(d => { return <p class={styleFunc(time, d)}>{time.diff(moment(), d)} {d}</p>})}
+                {arr.map(d => { return <p class={styleFunc(time, d)}>{time.diff(moment(), d)} {d}</p> })}
+              </Tab>
+              <Tab style={{ fontSize: '1.5em' }} eventKey="matter" title="4">
+                <div id="mattre_container" ></div>
               </Tab>
             </Tabs>
-
-          </Container>
+          </Container >
         )
       }
     }
@@ -110,6 +202,10 @@
       colorStart: "#EBDEF0",
       colorStop: "#E2B0FF",
     });
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.14.2/matter.min.js"></script>
+  <script>
+
   </script>
 </body>
 
