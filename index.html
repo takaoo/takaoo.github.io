@@ -100,12 +100,12 @@
       Matter.Events.on(mouseConstraint, "mousedown", e => {
         // console.log(e,"down");
         World.add(engine.world, [
-          Matter.Bodies.rectangle(e.mouse.absolute.x, e.mouse.absolute.y, 110, 110, {
+          Matter.Bodies.rectangle(e.mouse.absolute.x, e.mouse.absolute.y, 200, 200, {
             render: {
               sprite: {
                 texture: './pen.png',
-                xScale: 0.5,
-                yScale: 0.5
+                xScale: 1,
+                yScale: 1
               }
             },
           })
@@ -120,13 +120,13 @@
         // Bodies.rectangle(800, 300, 50, 600, { isStatic: true }),
         // Bodies.rectangle(0, 300, 50, 600, { isStatic: true })
 
-        Matter.Composites.pyramid(width * 0.3, 0, 5, 5, 10, 10, function (x, y) {
-          return Bodies.circle(x, y, 30, {
+        Matter.Composites.pyramid(width * 0.2, 0, 3, 3, 10, 10, function (x, y) {
+          return Bodies.circle(x, y, 80, {
             render: {
               sprite: {
                 texture: './pen.png',
-                xScale: 0.25,
-                yScale: 0.25
+                xScale: 0.7,
+                yScale: 0.7
               }
             },
           });
