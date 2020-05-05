@@ -40,6 +40,7 @@
     const arr = ['seconds', 'minutes', 'hours', 'days', 'weeks', 'months']
     const ANIME = ['bounce', 'flash', 'pulse', 'rubberBand', 'shake', 'swing', 'tada', 'wobble', 'jello', 'hinge', 'jackInTheBox', 'heartBeat']
     const RANDOM_ANIME = ANIME[Math.floor(Math.random() * ANIME.length)]
+    let isMatterStarted = false
 
     const styleFunc = (time, d) => {
       let style
@@ -55,6 +56,8 @@
     }
 
     const matterStart = () => {
+      if (isMatterStarted) return;
+      isMatterStarted = true;
       var width = window.innerWidth * 0.7;
       var height = window.innerHeight * 0.5;
       // module aliases
@@ -99,11 +102,16 @@
       // マウス押したら物体出現
       Matter.Events.on(mouseConstraint, "mousedown", e => {
         // console.log(e,"down");
+        // 0~9
+        let num = Math.floor(Math.random() * 10);
+        let ko_url;
+        if (num < 5) ko_url = './pen.png'
+        else ko_url = './pen2.png'
         World.add(engine.world, [
-          Matter.Bodies.rectangle(e.mouse.absolute.x, e.mouse.absolute.y, 200, 200, {
+          Matter.Bodies.circle(e.mouse.absolute.x, e.mouse.absolute.y, 100, {
             render: {
               sprite: {
-                texture: './pen.png',
+                texture: ko_url,
                 xScale: 1,
                 yScale: 1
               }
