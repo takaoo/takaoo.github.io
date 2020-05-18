@@ -64,7 +64,8 @@
       var Engine = Matter.Engine,
         Render = Matter.Render,
         World = Matter.World,
-        Bodies = Matter.Bodies;
+        Bodies = Matter.Bodies,
+        Composites = Matter.Composites;
 
       // create an engine
       var engine = Engine.create();
@@ -80,13 +81,6 @@
           background: 'transparent'
         }
       });
-
-      // create two boxes and a ground
-      var boxA = Bodies.rectangle(width * 0.1, 0, 80, 80);
-      var boxB = Bodies.rectangle(width * 0.3, 0, 80, 80);
-
-      // add all of the bodies to the world
-      World.add(engine.world, [boxA, boxB]);
 
       // add mouse control
       var mouse = Matter.Mouse.create(render.canvas),
@@ -107,38 +101,65 @@
         let ko_url;
         if (num < 5) ko_url = './pen.png'
         else ko_url = './pen2.png'
-        World.add(engine.world, [
-          Matter.Bodies.circle(e.mouse.absolute.x, e.mouse.absolute.y, 100, {
-            render: {
-              sprite: {
-                texture: ko_url,
-                xScale: 1,
-                yScale: 1
-              }
-            },
-          })
-        ]);
+        // World.add(engine.world, [
+        //   Matter.Bodies.circle(e.mouse.absolute.x, e.mouse.absolute.y, 100, {
+        //     render: {
+        //       sprite: {
+        //         texture: ko_url,
+        //         xScale: 1,
+        //         yScale: 1
+        //       }
+        //     },
+        //   })
+        // ]);
       });
+      let ko_url = './pen.png'
+      let ko_url2 = './pen2.png'
 
+      let particleOptions = {
+        restitution: 1,
+        friction: 0,
+        frictionStatic: 0,
+        render: {
+          sprite: {
+            texture: ko_url,
+            xScale: 1,
+            yScale: 1
+          }
+        }
+      };
+      let particleOptions2 = {
+        restitution: 1,
+        friction: 0,
+        frictionStatic: 0,
+        render: {
+          sprite: {
+            texture: ko_url2,
+            xScale: 1,
+            yScale: 1
+          }
+        }
+      };
       World.add(engine.world, mouseConstraint);
-
       World.add(engine.world, [
-        // Bodies.rectangle(400, 0, 800, 5, { isStatic: true }),
-        Bodies.rectangle(width * 0.5, height, width * 0.9, 50, { isStatic: true }),
-        // Bodies.rectangle(800, 300, 50, 600, { isStatic: true }),
-        // Bodies.rectangle(0, 300, 50, 600, { isStatic: true })
+        Bodies.rectangle(width * 0.5, 0, width * 0.95, 50, { isStatic: true }),
+        Bodies.rectangle(width * 0.5, height, width * 0.95, 50, { isStatic: true }),
+        Bodies.rectangle(width, height * 0.5, 50, height, { isStatic: true }),
+        Bodies.rectangle(0, height * 0.5, 50, height, { isStatic: true }),
+        Bodies.circle(width * 0.6, height * 0.5, 110, particleOptions),
+        Bodies.rectangle(width * 0.3, height * 0.5, 200, 180, particleOptions2)
 
-        Matter.Composites.pyramid(width * 0.2, 0, 3, 3, 10, 10, function (x, y) {
-          return Bodies.circle(x, y, 80, {
-            render: {
-              sprite: {
-                texture: './pen.png',
-                xScale: 0.7,
-                yScale: 0.7
-              }
-            },
-          });
-        })
+        // Matter.Composites.pyramid(width * 0.2, 0, 3, 3, 10, 10, function (x, y) {
+        //   return Bodies.circle(x, y, 80, {
+        //     render: {
+        //       sprite: {
+        //         texture: './pen.png',
+        //         xScale: 0.7,
+        //         yScale: 0.7
+        //       }
+        //     },
+        //   });
+        // })
       ]);
 
 
