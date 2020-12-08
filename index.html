@@ -176,17 +176,37 @@
         this.state = {
           time: time.diff(moment(), 'seconds'),
           time_tmp: time_tmp.diff(moment(), 'seconds'),
+          img: '',
         }
         setInterval(() => {
-          // console.log(time.diff(moment(), 'seconds'));
           this.setState({ time: time.diff(moment(), 'seconds'), time_tmp: time_tmp.diff(moment(), 'seconds') })
         }, 1000);
+
+        fetch(`https://pokeapi.co/api/v2/pokemon/${Math.floor(Math.random() * 493) + 1}/`)
+          .then((response) => response.json())
+          .then((responseJson) => {
+            // pokemon in monday
+            if (moment().day() === 1) {
+              this.setState({
+                img: responseJson.sprites.front_default,
+              });
+            } else {
+              this.setState({
+                img: './pen.png',
+              });
+            }
+          })
+          .catch((error) => {
+            this.setState({
+              img: './pen.png',
+            });
+          });
       }
 
       render() {
         return (
           <Container style={{ marginTop: '10vh' }}>
-            <p style={{ fontSize: "4em" }} class={`d-flex justify-content-center`}>Jujiiieee <span class={`animated infinite slower ${RANDOM_ANIME}`}><Image src="pen.png" /></span></p>
+            <p style={{ fontSize: "4em" }} class={`d-flex justify-content-center`}>Jujiiieee <span class={`animated infinite slower ${RANDOM_ANIME}`}><Image src={this.state.img} style={{ height: '300px' }} /></span></p>
 
             <Tabs variant="pills" defaultActiveKey="tab1" justify transition={false} onSelect={(e) => { if (e === 'matter') matterStart() }}>
               <Tab style={{ fontSize: '1.5em' }} eventKey="tab1" title="1">
