@@ -25,216 +25,235 @@
 
   <div id="root"></div>
   <script type="text/babel">
-    const D = "2021-04-01"
-    const NEXT_MEET = "2020-12-31"
-    const TWO_YEARS = "2020-11-11"
-    let time = moment(D)
-    let time_tmp = moment(NEXT_MEET)
-    let time_two_years = moment(TWO_YEARS)
-    const Container = ReactBootstrap.Container
-    const Tabs = ReactBootstrap.Tabs
-    const Tab = ReactBootstrap.Tab
-    const Image = ReactBootstrap.Image
-    const Modal = ReactBootstrap.Modal
-    const Button = ReactBootstrap.Button
-    const arr = ['seconds', 'minutes', 'hours', 'days', 'weeks', 'months']
-    const ANIME = ['bounce', 'flash', 'pulse', 'rubberBand', 'shake', 'swing', 'tada', 'wobble', 'jello', 'hinge', 'jackInTheBox', 'heartBeat']
-    const RANDOM_ANIME = ANIME[Math.floor(Math.random() * ANIME.length)]
-    let isMatterStarted = false
-
-    const styleFunc = (time, d) => {
-      let style
-      if (time.diff(moment(), d) === 0) style = "d-flex justify-content-center text-primary"
-      else style = "d-flex justify-content-center"
-      return style
-    }
-    const First = (props) => {
-      return <div>
-        <p style={{ fontSize: '1.5em' }} class="d-flex justify-content-center">{props.title}</p>
-        <p class="d-flex justify-content-center">date: {props.date}</p>
-      </div>
-    }
-
-    const matterStart = () => {
-      if (isMatterStarted) return;
-      isMatterStarted = true;
-      var width = window.innerWidth * 0.7;
-      var height = window.innerHeight * 0.5;
-      // module aliases
-      var Engine = Matter.Engine,
-        Render = Matter.Render,
-        World = Matter.World,
-        Bodies = Matter.Bodies,
-        Composites = Matter.Composites;
-
-      // create an engine
-      var engine = Engine.create();
-
-      var render = Render.create({
-        element: document.querySelector("#mattre_container"),
-        engine: engine,
-        options: {
-          width: width,
-          height: height,
-          pixelRatio: 2, //Pixel比; スマホ用に2にする
-          wireframes: false,
-          background: 'transparent'
-        }
+    const firebaseConfig = {
+      apiKey: "AIzaSyBD7I1tp9YuqjR9EHxcrSpPrth6L4dSZkU",
+      authDomain: "test-ff4b3.firebaseapp.com",
+      databaseURL: "https://test-ff4b3.firebaseio.com",
+      projectId: "test-ff4b3",
+      storageBucket: "test-ff4b3.appspot.com",
+      messagingSenderId: "377987917432",
+      appId: "1:377987917432:web:728968c754e4656e2aef8d",
+      measurementId: "G-VXNC46XNPT"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    db.collection("date").get().then((querySnapshot) => {
+      let array=[];
+      querySnapshot.forEach((doc) => {
+          array.push(doc.data());
       });
 
-      // add mouse control
-      var mouse = Matter.Mouse.create(render.canvas),
-        mouseConstraint = Matter.MouseConstraint.create(engine, {
-          mouse: mouse,
-          constraint: {
-            stiffness: 0.2,
-            render: {
-              visible: true
-            }
+      const D = array.find(element => element.order === 3);
+      const NEXT_MEET = array.find(element => element.order === 1);
+      const TWO_YEARS = array.find(element => element.order === 2);
+      let time = D.date.toDate();
+      let time_tmp = NEXT_MEET.date.toDate();
+      let time_two_years = TWO_YEARS.date.toDate();
+      const Container = ReactBootstrap.Container
+      const Tabs = ReactBootstrap.Tabs
+      const Tab = ReactBootstrap.Tab
+      const Image = ReactBootstrap.Image
+      const Modal = ReactBootstrap.Modal
+      const Button = ReactBootstrap.Button
+      const arr = ['seconds', 'minutes', 'hours', 'days', 'weeks', 'months']
+      const ANIME = ['bounce', 'flash', 'pulse', 'rubberBand', 'shake', 'swing', 'tada', 'wobble', 'jello', 'hinge', 'jackInTheBox', 'heartBeat']
+      const RANDOM_ANIME = ANIME[Math.floor(Math.random() * ANIME.length)]
+      let isMatterStarted = false
+
+      const styleFunc = (time, d) => {
+        let style
+        if (moment(time).diff(moment(), d) === 0) style = "d-flex justify-content-center text-primary"
+        else style = "d-flex justify-content-center"
+        return style
+      }
+      const First = (props) => {
+        return <div>
+          <p style={{ fontSize: '1.5em' }} class="d-flex justify-content-center">{props.title}</p>
+          <p class="d-flex justify-content-center">date: {props.date}</p>
+        </div>
+      }
+
+      const matterStart = () => {
+        if (isMatterStarted) return;
+        isMatterStarted = true;
+        var width = window.innerWidth * 0.7;
+        var height = window.innerHeight * 0.5;
+        // module aliases
+        var Engine = Matter.Engine,
+          Render = Matter.Render,
+          World = Matter.World,
+          Bodies = Matter.Bodies,
+          Composites = Matter.Composites;
+
+        // create an engine
+        var engine = Engine.create();
+
+        var render = Render.create({
+          element: document.querySelector("#mattre_container"),
+          engine: engine,
+          options: {
+            width: width,
+            height: height,
+            pixelRatio: 2, //Pixel比; スマホ用に2にする
+            wireframes: false,
+            background: 'transparent'
           }
         });
-      // マウス押したら物体出現
-      Matter.Events.on(mouseConstraint, "mousedown", e => {
-        // console.log(e,"down");
-        // 0~9
-        let num = Math.floor(Math.random() * 10);
-        let ko_url;
-        if (num < 5) ko_url = './pen.png'
-        else ko_url = './pen2.png'
-        // World.add(engine.world, [
-        //   Matter.Bodies.circle(e.mouse.absolute.x, e.mouse.absolute.y, 100, {
-        //     render: {
-        //       sprite: {
-        //         texture: ko_url,
-        //         xScale: 1,
-        //         yScale: 1
-        //       }
-        //     },
-        //   })
-        // ]);
-      });
-      let ko_url = './pen.png'
-      let ko_url2 = './pen2.png'
 
-      let particleOptions = {
-        restitution: 1,
-        friction: 0,
-        frictionStatic: 0,
-        render: {
-          sprite: {
-            texture: ko_url,
-            xScale: 1,
-            yScale: 1
+        // add mouse control
+        var mouse = Matter.Mouse.create(render.canvas),
+          mouseConstraint = Matter.MouseConstraint.create(engine, {
+            mouse: mouse,
+            constraint: {
+              stiffness: 0.2,
+              render: {
+                visible: true
+              }
+            }
+          });
+        // マウス押したら物体出現
+        Matter.Events.on(mouseConstraint, "mousedown", e => {
+          // console.log(e,"down");
+          // 0~9
+          let num = Math.floor(Math.random() * 10);
+          let ko_url;
+          if (num < 5) ko_url = './pen.png'
+          else ko_url = './pen2.png'
+          // World.add(engine.world, [
+          //   Matter.Bodies.circle(e.mouse.absolute.x, e.mouse.absolute.y, 100, {
+          //     render: {
+          //       sprite: {
+          //         texture: ko_url,
+          //         xScale: 1,
+          //         yScale: 1
+          //       }
+          //     },
+          //   })
+          // ]);
+        });
+        let ko_url = './pen.png'
+        let ko_url2 = './pen2.png'
+
+        let particleOptions = {
+          restitution: 1,
+          friction: 0,
+          frictionStatic: 0,
+          render: {
+            sprite: {
+              texture: ko_url,
+              xScale: 1,
+              yScale: 1
+            }
           }
-        }
-      };
-      let particleOptions2 = {
-        restitution: 1,
-        friction: 0,
-        frictionStatic: 0,
-        render: {
-          sprite: {
-            texture: ko_url2,
-            xScale: 1,
-            yScale: 1
+        };
+        let particleOptions2 = {
+          restitution: 1,
+          friction: 0,
+          frictionStatic: 0,
+          render: {
+            sprite: {
+              texture: ko_url2,
+              xScale: 1,
+              yScale: 1
+            }
           }
-        }
-      };
-      World.add(engine.world, mouseConstraint);
-      World.add(engine.world, [
-        Bodies.rectangle(width * 0.5, 0, width * 0.95, 50, { isStatic: true }),
-        Bodies.rectangle(width * 0.5, height, width * 0.95, 50, { isStatic: true }),
-        Bodies.rectangle(width, height * 0.5, 50, height, { isStatic: true }),
-        Bodies.rectangle(0, height * 0.5, 50, height, { isStatic: true }),
-        Bodies.circle(width * 0.6, height * 0.5, 110, particleOptions),
-        Bodies.rectangle(width * 0.3, height * 0.5, 200, 180, particleOptions2)
+        };
+        World.add(engine.world, mouseConstraint);
+        World.add(engine.world, [
+          Bodies.rectangle(width * 0.5, 0, width * 0.95, 50, { isStatic: true }),
+          Bodies.rectangle(width * 0.5, height, width * 0.95, 50, { isStatic: true }),
+          Bodies.rectangle(width, height * 0.5, 50, height, { isStatic: true }),
+          Bodies.rectangle(0, height * 0.5, 50, height, { isStatic: true }),
+          Bodies.circle(width * 0.6, height * 0.5, 110, particleOptions),
+          Bodies.rectangle(width * 0.3, height * 0.5, 200, 180, particleOptions2)
 
-        // Matter.Composites.pyramid(width * 0.2, 0, 3, 3, 10, 10, function (x, y) {
-        //   return Bodies.circle(x, y, 80, {
-        //     render: {
-        //       sprite: {
-        //         texture: './pen.png',
-        //         xScale: 0.7,
-        //         yScale: 0.7
-        //       }
-        //     },
-        //   });
-        // })
-      ]);
+          // Matter.Composites.pyramid(width * 0.2, 0, 3, 3, 10, 10, function (x, y) {
+          //   return Bodies.circle(x, y, 80, {
+          //     render: {
+          //       sprite: {
+          //         texture: './pen.png',
+          //         xScale: 0.7,
+          //         yScale: 0.7
+          //       }
+          //     },
+          //   });
+          // })
+        ]);
 
 
-      // run the engine
-      Engine.run(engine);
+        // run the engine
+        Engine.run(engine);
 
-      // run the renderer
-      Render.run(render);
-    }
+        // run the renderer
+        Render.run(render);
+      }
 
-    class MyComponent extends React.Component {
-      constructor(props) {
-        super(props)
-        this.state = {
-          time: time.diff(moment(), 'seconds'),
-          time_tmp: time_tmp.diff(moment(), 'seconds'),
-          img: '',
-        }
-        setInterval(() => {
-          this.setState({ time: time.diff(moment(), 'seconds'), time_tmp: time_tmp.diff(moment(), 'seconds') })
-        }, 1000);
+      class MyComponent extends React.Component {
+        constructor(props) {
+          super(props)
+          this.state = {
+            time: moment(time).diff(moment(), 'seconds'),
+            time_tmp: moment(time_tmp).diff(moment(), 'seconds'),
+            img: '',
+          }
+          setInterval(() => {
+            this.setState({ time: moment(time).diff(moment(), 'seconds'), time_tmp: moment(time_tmp).diff(moment(), 'seconds') })
+          }, 1000);
 
-        fetch(`https://pokeapi.co/api/v2/pokemon/${Math.floor(Math.random() * 493) + 1}/`)
-          .then((response) => response.json())
-          .then((responseJson) => {
-            // pokemon in monday
-            if (moment().day() === 1) {
-              this.setState({
-                img: responseJson.sprites.front_default,
-              });
-            } else {
+          fetch(`https://pokeapi.co/api/v2/pokemon/${Math.floor(Math.random() * 493) + 1}/`)
+            .then((response) => response.json())
+            .then((responseJson) => {
+              // pokemon in monday
+              if (moment().day() === 1) {
+                this.setState({
+                  img: responseJson.sprites.front_default,
+                });
+              } else {
+                this.setState({
+                  img: './pen.png',
+                });
+              }
+            })
+            .catch((error) => {
               this.setState({
                 img: './pen.png',
               });
-            }
-          })
-          .catch((error) => {
-            this.setState({
-              img: './pen.png',
             });
-          });
-      }
+        }
 
-      render() {
-        return (
-          <Container style={{ marginTop: '10vh' }}>
-            <p style={{ fontSize: "4em" }} class={`d-flex justify-content-center`}>Jujiiieee <span class={`animated infinite slower ${RANDOM_ANIME}`}><Image src={this.state.img} style={{ height: '300px' }} /></span></p>
+        render() {
+          return (
+            <Container style={{ marginTop: '10vh' }}>
+              <p style={{ fontSize: "4em" }} class={`d-flex justify-content-center`}>Jujiiieee <span class={`animated infinite slower ${RANDOM_ANIME}`}><Image src={this.state.img} style={{ height: '300px' }} /></span></p>
 
-            <Tabs variant="pills" defaultActiveKey="tab1" justify transition={false} onSelect={(e) => { if (e === 'matter') matterStart() }}>
-              <Tab style={{ fontSize: '1.5em' }} eventKey="tab1" title="1">
-                {(() => {
-                  if (time_tmp.diff(moment(), 'days') === 1) {
-                    return <p class="d-flex justify-content-center text-danger animated tada infinite">Last One Day!!!!!!!!!</p>;
-                  }
-                })()}
-                <First title="NEXT MEET" date={NEXT_MEET} />
-                {arr.map(d => { return <p class={styleFunc(time_tmp, d)}>{time_tmp.diff(moment(), d)} {d}</p> })}
-              </Tab>
-              <Tab style={{ fontSize: '1.5em' }} eventKey="tab2" title="2">
-                <First title="2 YEARS" date={TWO_YEARS} />
-                {arr.map(d => { return <p class={styleFunc(time_two_years, d)}>{time_two_years.diff(moment(), d)} {d}</p> })}
-              </Tab>
-              <Tab style={{ fontSize: '1.5em' }} eventKey="tab3" title="3">
-                <First title="WITH J" date={D} />
-                {arr.map(d => { return <p class={styleFunc(time, d)}>{time.diff(moment(), d)} {d}</p> })}
-              </Tab>
-              <Tab style={{ fontSize: '1.5em' }} eventKey="matter" title="4">
-                <div id="mattre_container" ></div>
-              </Tab>
-            </Tabs>
-          </Container >
-        )
+              <Tabs variant="pills" defaultActiveKey="tab1" justify transition={false} onSelect={(e) => { if (e === 'matter') matterStart() }}>
+                <Tab style={{ fontSize: '1.5em' }} eventKey="tab1" title="1">
+                  {(() => {
+                    if (moment(time_tmp).diff(moment(), 'days') === 1) {
+                      return <p class="d-flex justify-content-center text-danger animated tada infinite">Last One Day!!!!!!!!!</p>;
+                    }
+                  })()}
+                  <First title={NEXT_MEET.name} date={moment(NEXT_MEET.date.toDate()).format('Y-M-D')} />
+                  {arr.map(d => { return <p class={styleFunc(time_tmp, d)}>{moment(time_tmp).diff(moment(), d)} {d}</p> })}
+                </Tab>
+                <Tab style={{ fontSize: '1.5em' }} eventKey="tab2" title="2">
+                  <First title={TWO_YEARS.name} date={moment(TWO_YEARS.date.toDate()).format('Y-M-D')} />
+                  {arr.map(d => { return <p class={styleFunc(time_two_years, d)}>{moment(time_two_years).diff(moment(), d)} {d}</p> })}
+                </Tab>
+                <Tab style={{ fontSize: '1.5em' }} eventKey="tab3" title="3">
+                  <First title={D.name} date={moment(D.date.toDate()).format('Y-M-D')} />
+                  {arr.map(d => { return <p class={styleFunc(time, d)}>{moment(time).diff(moment(), d)} {d}</p> })}
+                </Tab>
+                <Tab style={{ fontSize: '1.5em' }} eventKey="matter" title="4">
+                  <div id="mattre_container" ></div>
+                </Tab>
+              </Tabs>
+            </Container >
+          )
+        }
       }
-    }
-    ReactDOM.render(<MyComponent />, document.getElementById('root'))
+      ReactDOM.render(<MyComponent />, document.getElementById('root'))
+  });
   </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.js"></script>
@@ -253,9 +272,14 @@
     });
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.14.2/matter.min.js"></script>
-  <script>
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-app.js"></script>
 
-  </script>
+  <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+  <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-analytics.js"></script>
+
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-firestore.js"></script>
 </body>
 
 </html>
