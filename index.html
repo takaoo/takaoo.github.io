@@ -36,19 +36,16 @@
       measurementId: "G-VXNC46XNPT"
     };
     firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
     const db = firebase.firestore();
-    db.collection("date").get().then((querySnapshot) => {
-      let array=[];
+    db.collection("date").orderBy('order').get().then((querySnapshot) => {
+      let date_array = [];
       querySnapshot.forEach((doc) => {
-          array.push(doc.data());
+          let data = doc.data();
+          data['moment'] = moment(data.date.toDate());
+          date_array.push(data);
       });
 
-      const D = array.find(element => element.order === 3);
-      const NEXT_MEET = array.find(element => element.order === 1);
-      const TWO_YEARS = array.find(element => element.order === 2);
-      let time = D.date.toDate();
-      let time_tmp = NEXT_MEET.date.toDate();
-      let time_two_years = TWO_YEARS.date.toDate();
       const Container = ReactBootstrap.Container
       const Tabs = ReactBootstrap.Tabs
       const Tab = ReactBootstrap.Tab
@@ -62,7 +59,7 @@
 
       const styleFunc = (time, d) => {
         let style
-        if (moment(time).diff(moment(), d) === 0) style = "d-flex justify-content-center text-primary"
+        if (time.diff(moment(), d) === 0) style = "d-flex justify-content-center text-primary"
         else style = "d-flex justify-content-center"
         return style
       }
@@ -192,12 +189,11 @@
         constructor(props) {
           super(props)
           this.state = {
-            time: moment(time).diff(moment(), 'seconds'),
-            time_tmp: moment(time_tmp).diff(moment(), 'seconds'),
+            diff: date_array[0].moment.diff(moment(), 'seconds'),
             img: '',
           }
           setInterval(() => {
-            this.setState({ time: moment(time).diff(moment(), 'seconds'), time_tmp: moment(time_tmp).diff(moment(), 'seconds') })
+            this.setState({ diff: moment(date_array[0].moment).diff(moment(), 'seconds') })
           }, 1000);
 
           fetch(`https://pokeapi.co/api/v2/pokemon/${Math.floor(Math.random() * 493) + 1}/`)
@@ -227,24 +223,17 @@
               <p style={{ fontSize: "4em" }} class={`d-flex justify-content-center`}>Jujiiieee <span class={`animated infinite slower ${RANDOM_ANIME}`}><Image src={this.state.img} style={{ height: '300px' }} /></span></p>
 
               <Tabs variant="pills" defaultActiveKey="tab1" justify transition={false} onSelect={(e) => { if (e === 'matter') matterStart() }}>
-                <Tab style={{ fontSize: '1.5em' }} eventKey="tab1" title="1">
+                {date_array.map(d => { return <Tab style={{ fontSize: '1.5em' }} eventKey={`tab${d.order}`} title={d.order}>
                   {(() => {
-                    if (moment(time_tmp).diff(moment(), 'days') === 1) {
+                    if (d.moment.diff(moment(), 'days') === 1 && d.order === 1) {
                       return <p class="d-flex justify-content-center text-danger animated tada infinite">Last One Day!!!!!!!!!</p>;
                     }
                   })()}
-                  <First title={NEXT_MEET.name} date={moment(NEXT_MEET.date.toDate()).format('Y-M-D')} />
-                  {arr.map(d => { return <p class={styleFunc(time_tmp, d)}>{moment(time_tmp).diff(moment(), d)} {d}</p> })}
+                <First title={d.name} date={d.moment.format('Y-M-D')} />
+                {arr.map(D => { return <p class={styleFunc(d.moment, D)}>{d.moment.diff(moment(), D)} {D}</p> })}
                 </Tab>
-                <Tab style={{ fontSize: '1.5em' }} eventKey="tab2" title="2">
-                  <First title={TWO_YEARS.name} date={moment(TWO_YEARS.date.toDate()).format('Y-M-D')} />
-                  {arr.map(d => { return <p class={styleFunc(time_two_years, d)}>{moment(time_two_years).diff(moment(), d)} {d}</p> })}
-                </Tab>
-                <Tab style={{ fontSize: '1.5em' }} eventKey="tab3" title="3">
-                  <First title={D.name} date={moment(D.date.toDate()).format('Y-M-D')} />
-                  {arr.map(d => { return <p class={styleFunc(time, d)}>{moment(time).diff(moment(), d)} {d}</p> })}
-                </Tab>
-                <Tab style={{ fontSize: '1.5em' }} eventKey="matter" title="4">
+                })}
+                <Tab style={{ fontSize: '1.5em' }} eventKey="matter" title="🐧">
                   <div id="mattre_container" ></div>
                 </Tab>
               </Tabs>
