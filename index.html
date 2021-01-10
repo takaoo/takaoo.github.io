@@ -230,6 +230,10 @@
                     }
                   })()}
                 <First title={d.name} date={d.moment.format('Y-M-D')} />
+                {(() => {
+                  const du = moment.duration(d.moment.diff(moment()));
+                      return <p class="d-flex justify-content-center">{`🆕 ${Math.floor( du.asDays() )}D ${du.hours()}H ${du.minutes()}M ${du.seconds()}S`}</p>;
+                })()}
                 {arr.map(D => { return <p class={styleFunc(d.moment, D)}>{d.moment.diff(moment(), D)} {D}</p> })}
                 </Tab>
                 })}
