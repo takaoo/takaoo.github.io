@@ -203,7 +203,8 @@
             this.setState({ diff: moment(date_array[0].moment).diff(moment(), 'seconds') })
           }, 1000);
 
-          const poke_id = Math.floor(Math.random() * 493) + 1;
+          const max_poke_id = 891;
+          const poke_id = Math.floor(Math.random() * max_poke_id) + 1;
           fetch(`https://pokeapi.co/api/v2/pokemon/${poke_id}/`)
             .then((response) => response.json())
             .then((responseJson) => {
