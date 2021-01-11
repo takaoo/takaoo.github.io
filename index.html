@@ -47,13 +47,16 @@
       });
 
       const Container = ReactBootstrap.Container
+      const Row = ReactBootstrap.Row
+      const Col = ReactBootstrap.Col
       const Tabs = ReactBootstrap.Tabs
       const Tab = ReactBootstrap.Tab
       const Image = ReactBootstrap.Image
       const Modal = ReactBootstrap.Modal
       const Button = ReactBootstrap.Button
+      const Collapse = ReactBootstrap.Collapse
       const arr = ['seconds', 'minutes', 'hours', 'days', 'weeks', 'months']
-      const ANIME = ['bounce', 'flash', 'pulse', 'rubberBand', 'shake', 'swing', 'tada', 'wobble', 'jello', 'hinge', 'jackInTheBox', 'heartBeat']
+      const ANIME = ['bounce', 'flash', 'pulse', 'rubberBand', 'shake', 'swing', 'tada', 'wobble', 'jello', 'jackInTheBox', 'heartBeat']
       const RANDOM_ANIME = ANIME[Math.floor(Math.random() * ANIME.length)]
       let isMatterStarted = false
 
@@ -191,12 +194,17 @@
           this.state = {
             diff: date_array[0].moment.diff(moment(), 'seconds'),
             img: '',
+            name: '',
+            genera: '',
+            flavor_text: '',
+            open: false,
           }
           setInterval(() => {
             this.setState({ diff: moment(date_array[0].moment).diff(moment(), 'seconds') })
           }, 1000);
 
-          fetch(`https://pokeapi.co/api/v2/pokemon/${Math.floor(Math.random() * 493) + 1}/`)
+          const poke_id = Math.floor(Math.random() * 493) + 1;
+          fetch(`https://pokeapi.co/api/v2/pokemon/${poke_id}/`)
             .then((response) => response.json())
             .then((responseJson) => {
               // pokemon in monday
@@ -215,12 +223,50 @@
                 img: './pen.png',
               });
             });
-        }
+
+            fetch(`https://pokeapi.co/api/v2/pokemon-species/${poke_id}/`)
+            .then((response) => response.json())
+            .then((responseJson) => {
+              // pokemon in monday
+              const names = responseJson.names;
+              const genera_list = responseJson.genera;
+              const flavor_text_entries = responseJson.flavor_text_entries;
+              const name = names.find(name => name.language.name =='ja');
+              const genera = genera_list.find(genera => genera.language.name =='ja');
+              const flavor_text = flavor_text_entries.find(text => text.language.name =='ja');
+              if (moment().day() === 1) {
+                this.setState({
+                  name: name.name,
+                  genera: genera.genus,
+                  flavor_text: flavor_text.flavor_text,
+                });
+              } else {
+                this.setState({
+                  name: 'コウペン',
+                  genera: 'ぺんぎんポケモン(？)',
+                  flavor_text: 'ぺん　ぎん',
+                });
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+              this.setState({
+                name: 'コウペン',
+                genera: 'ぺんぎんポケモン(？)',
+                flavor_text: 'ぺん　ぎん',
+              });
+            });
+        } 
 
         render() {
           return (
             <Container style={{ marginTop: '10vh' }}>
-              <p style={{ fontSize: "4em" }} class={`d-flex justify-content-center`}>Jujiiieee <span class={`animated infinite slower ${RANDOM_ANIME}`}><Image src={this.state.img} style={{ height: '300px' }} /></span></p>
+              <p style={{ fontSize: "4em" }} class={`d-flex justify-content-center`}>
+                Jujiiieee
+                <span class={`animated infinite slower ${RANDOM_ANIME}`}>
+                  <Image src={this.state.img} style={{ height: '300px' }} onClick={()=>alert(`${this.state.name} \n${this.state.genera} \n\n${this.state.flavor_text}`)}/>
+                </span>
+              </p>
 
               <Tabs variant="pills" defaultActiveKey="tab1" justify transition={false} onSelect={(e) => { if (e === 'matter') matterStart() }}>
                 {date_array.map(d => { return <Tab style={{ fontSize: '1.5em' }} eventKey={`tab${d.order}`} title={d.order}>
@@ -232,9 +278,37 @@
                 <First title={d.name} date={d.moment.format('Y-M-D')} />
                 {(() => {
                   const du = moment.duration(d.moment.diff(moment()));
-                      return <p class="d-flex justify-content-center">{`🆕 ${Math.floor( du.asDays() )}D ${du.hours()}H ${du.minutes()}M ${du.seconds()}S`}</p>;
+                      return <div class="text-center"><Row>
+                              <Col style={{ fontSize: "1.5em" }}>{Math.floor( du.asDays() )}</Col>
+                              <Col style={{ fontSize: "1.5em" }}>{du.hours()}</Col>
+                              <Col style={{ fontSize: "1.5em" }}>{du.minutes()}</Col>
+                              <Col style={{ fontSize: "1.5em" }}>{du.seconds()}</Col>
+                            </Row>
+                            <Row>
+                              <Col>days</Col>
+                              <Col>hours</Col>
+                              <Col>min</Col>
+                              <Col>sec</Col>
+                            </Row>
+                          </div>;
                 })()}
-                {arr.map(D => { return <p class={styleFunc(d.moment, D)}>{d.moment.diff(moment(), D)} {D}</p> })}
+                <div class="d-flex justify-content-center mb-2">
+                  <Button
+                  onClick={() => this.setState({open:!this.state.open})}
+                  aria-controls="example-collapse-text"
+                  aria-expanded={this.state.open}
+                  style={{ fontSize: '1em' }}
+                  >
+                  old version
+                  </Button>
+                </div>
+                
+                  <Collapse in={this.state.open}>
+                    <div id="example-collapse-text">
+                      {arr.map(D => { return <p class={styleFunc(d.moment, D)}>{d.moment.diff(moment(), D)} {D}</p> })}
+
+                    </div>
+                  </Collapse>
                 </Tab>
                 })}
                 <Tab style={{ fontSize: '1.5em' }} eventKey="matter" title="🐧">
