@@ -237,12 +237,10 @@
                 const genus = genera.find(genera => genera.language.name =='ja').genus;
                 const flavor_text = flavor_text_entries.find(text => text.language.name =='ja').flavor_text;
                 if (moment().day() === 1) {
-                  obj = {
-                    img: img,
-                    name: name,
-                    genera: genus,
-                    flavor_text: flavor_text,
-                  }
+                  obj.img = img;
+                  obj.name = name;
+                  obj.genera = genus;
+                  obj.flavor_text = flavor_text;
                 }
                 return obj
               })
