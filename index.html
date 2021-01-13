@@ -205,56 +205,60 @@
 
           const max_poke_id = 892;
           const poke_id = Math.floor(Math.random() * max_poke_id) + 1;
+          const D_img = '/pen.png';
+          const D_name = 'コウペン';
+          const D_genus = 'ぺんぎんポケモン(？)';
+          const D_flavor_text = '生きとし　生けるもの　すべてを　\n肯定　してくれる　\nコウテイ　ペンギンの　赤ちゃん。';
+          let obj = {
+            img: D_img,
+            name: D_name,
+            genera: D_genus,
+            flavor_text: D_flavor_text,
+          };
           fetch(`https://pokeapi.co/api/v2/pokemon/${poke_id}/`)
             .then((response) => response.json())
             .then((responseJson) => {
               // pokemon in monday
               const {sprites} = responseJson;
-              if (moment().day() === 1) {
-                this.setState({
-                  img: sprites.front_default,
-                });
-              } else {
-                this.setState({
-                  img: './pen.png',
-                });
-              }
-            })
-            .catch((error) => {
-              this.setState({
-                img: './pen.png',
-              });
-            });
-
-            fetch(`https://pokeapi.co/api/v2/pokemon-species/${poke_id}/`)
-            .then((response) => response.json())
-            .then((responseJson) => {
-              // pokemon in monday
-              const {names, genera, flavor_text_entries} = responseJson;
-              const name = names.find(name => name.language.name =='ja').name;
-              const genus = genera.find(genera => genera.language.name =='ja').genus;
-              const flavor_text = flavor_text_entries.find(text => text.language.name =='ja').flavor_text;
-              if (moment().day() === 1) {
-                this.setState({
-                  name: name,
-                  genera: genus,
-                  flavor_text: flavor_text,
-                });
-              } else {
-                this.setState({
-                  name: 'コウペン',
-                  genera: 'ぺんぎんポケモン(？)',
-                  flavor_text: '生きとし　生けるもの　すべてを　\n肯定　してくれる　\nコウテイ　ペンギンの　赤ちゃん。',
-                });
-              }
+              const img = sprites.front_default;
+              return img
             })
             .catch((error) => {
               console.log(error);
-              this.setState({
-                name: 'コウペン',
-                genera: 'ぺんぎんポケモン(？)',
-                flavor_text: '生きとし　生けるもの　すべてを　\n肯定　してくれる　\nコウテイ　ペンギンの　赤ちゃん。',
-              });
+              return D_img
+            })
+            .then((img) => {
+              fetch(`https://pokeapi.co/api/v2/pokemon-species/${poke_id}/`)
+              .then((response) => response.json())
+              .then((responseJson) => {
+                // pokemon in monday
+                const {names, genera, flavor_text_entries} = responseJson;
+                const name = names.find(name => name.language.name =='ja').name;
+                const genus = genera.find(genera => genera.language.name =='ja').genus;
+                const flavor_text = flavor_text_entries.find(text => text.language.name =='ja').flavor_text;
+                if (moment().day() === 1) {
+                  obj = {
+                    img: img,
+                    name: name,
+                    genera: genus,
+                    flavor_text: flavor_text,
+                  }
+                }
+                return obj
+              })
+              .catch((error) => {
+                console.log(error);
+                return obj
+              })
+              .then((obj)=>{
+                this.setState({
+                  img:obj.img,
+                  name: obj.name,
+                  genera: obj.genera,
+                  flavor_text: obj.flavor_text,
+                });
+              })
+
             });
         } 
 
