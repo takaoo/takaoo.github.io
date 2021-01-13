@@ -203,15 +203,16 @@
             this.setState({ diff: moment(date_array[0].moment).diff(moment(), 'seconds') })
           }, 1000);
 
-          const max_poke_id = 891;
+          const max_poke_id = 892;
           const poke_id = Math.floor(Math.random() * max_poke_id) + 1;
           fetch(`https://pokeapi.co/api/v2/pokemon/${poke_id}/`)
             .then((response) => response.json())
             .then((responseJson) => {
               // pokemon in monday
+              const {sprites} = responseJson;
               if (moment().day() === 1) {
                 this.setState({
-                  img: responseJson.sprites.front_default,
+                  img: sprites.front_default,
                 });
               } else {
                 this.setState({
@@ -229,17 +230,15 @@
             .then((response) => response.json())
             .then((responseJson) => {
               // pokemon in monday
-              const names = responseJson.names;
-              const genera_list = responseJson.genera;
-              const flavor_text_entries = responseJson.flavor_text_entries;
-              const name = names.find(name => name.language.name =='ja');
-              const genera = genera_list.find(genera => genera.language.name =='ja');
-              const flavor_text = flavor_text_entries.find(text => text.language.name =='ja');
+              const {names, genera, flavor_text_entries} = responseJson;
+              const name = names.find(name => name.language.name =='ja').name;
+              const genus = genera.find(genera => genera.language.name =='ja').genus;
+              const flavor_text = flavor_text_entries.find(text => text.language.name =='ja').flavor_text;
               if (moment().day() === 1) {
                 this.setState({
-                  name: name.name,
-                  genera: genera.genus,
-                  flavor_text: flavor_text.flavor_text,
+                  name: name,
+                  genera: genus,
+                  flavor_text: flavor_text,
                 });
               } else {
                 this.setState({
