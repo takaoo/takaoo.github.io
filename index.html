@@ -203,6 +203,7 @@
             this.setState({ diff: moment(date_array[0].moment).diff(moment(), 'seconds') })
           }, 1000);
 
+          console.log('a');
           const max_poke_id = 892;
           const poke_id = Math.floor(Math.random() * max_poke_id) + 1;
           const D_img = '/pen.png';
