@@ -43,10 +43,10 @@ name = "プロジェクト"
 weight = 2
 url = "projects/"
 
-[[languages.ja.menu.main]]
-name = "ブログ"
-weight = 3
-url = "posts/"
+# [[languages.ja.menu.main]]
+# name = "ブログ"
+# weight = 3
+# url = "posts/"
 
 [languages.en]
 languageName = ":us:"
@@ -61,10 +61,10 @@ name = "Projects"
 weight = 2
 url = "en/projects/"
 
-[[languages.en.menu.main]]
-name = "Blog"
-weight = 3
-url = "en/posts/"
+# [[languages.en.menu.main]]
+# name = "Blog"
+# weight = 3
+# url = "en/posts/"
 
 [languages.zh]
 languageName = ":cn:"
@@ -79,7 +79,7 @@ name = "项目"
 weight = 2
 url = "zh/projects/"
 
-[[languages.zh.menu.main]]
-name = "博客"
-weight = 3
-url = "zh/posts/"
+# [[languages.zh.menu.main]]
+# name = "博客"
+# weight = 3
+# url = "zh/posts/"
