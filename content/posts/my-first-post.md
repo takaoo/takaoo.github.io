@@ -17,3 +17,6 @@ function hello() {
   console.log("Hello, World!");
 }
 ```
+
+- [https://takaoo.netlify.app/](https://takaoo.netlify.app/)
+- [https://blog-ttt.netlify.app/](https://blog-ttt.netlify.app/)
