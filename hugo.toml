@@ -6,7 +6,7 @@ defaultContentLanguage = "ja"
 enableEmoji = true
 
 [params]
-author = "takao"
+author = "Takao"
 description = "Web Developer & Designer"
 keywords = "portfolio, developer, designer"
 info = ["Web Developer", "Designer", "Creator"]
