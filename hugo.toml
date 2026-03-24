@@ -15,8 +15,8 @@ colorScheme = "auto"
 hideColorSchemeToggle = false
 
 # faviconSVG = "/images/favicon.svg"
-# faviconSVG = "/images/favicon_crow.svg"
-faviconSVG = "/images/favicon_octopus.svg"
+# faviconSVG = "/images/favicon_octopus.svg"
+faviconSVG = "/images/favicon_kiwi-bird.svg"
 favicon_32 = "/images/favicon-32x32.png"
 favicon_16 = "/images/favicon-16x16.png"
 
