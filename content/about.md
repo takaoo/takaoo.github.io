@@ -18,5 +18,4 @@ draft: false
 - [ポートフォリオ(netlify)](https://takaoo.netlify.app/)
 - [ブログ(netlify)](https://blog-ttt.netlify.app/)
 - [マークダウンに変換アプリ](https://takaoo.github.io/Angular_mark/)
-- [covid-19 chart](https://takaoo.github.io/covid-withNuxtJs/)
 - [vueのサンプルアプリ](https://takaoo.github.io/vue-sample/)
